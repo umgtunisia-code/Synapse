@@ -25,13 +25,40 @@ export default function DashboardPage() {
 
   const loadDashboardData = async () => {
     if (!user) return;
-    
+
     try {
       const userProjects = await getProjectsByUser(user.id);
       setProjects(userProjects as Project[]);
-      
+
       const tasksForToday = await getTasksForToday(user.id);
-      setTodayTasks(tasksForToday as TaskWithProject[]);
+      // Transform the data to match TaskWithProject type
+      const transformedTasks = tasksForToday.map((item: any) => ({
+        task: {
+          id: item.tasks.id,
+          userId: item.tasks.userId,
+          projectId: item.tasks.projectId,
+          noteId: item.tasks.noteId,
+          title: item.tasks.title,
+          description: item.tasks.description,
+          dueAt: item.tasks.dueAt,
+          reminderOffsetMinutes: item.tasks.reminderOffsetMinutes,
+          isCompleted: item.tasks.isCompleted,
+          isRecurring: item.tasks.isRecurring,
+          recurrenceRule: item.tasks.recurrenceRule,
+          createdAt: item.tasks.createdAt,
+          updatedAt: item.tasks.updatedAt,
+        },
+        project: {
+          id: item.project.id,
+          userId: item.project.userId,
+          name: item.project.name,
+          color: item.project.color,
+          isArchived: item.project.isArchived,
+          createdAt: item.project.createdAt,
+          updatedAt: item.project.updatedAt,
+        }
+      }));
+      setTodayTasks(transformedTasks);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     } finally {
@@ -41,7 +68,7 @@ export default function DashboardPage() {
 
   const handleAddProject = async () => {
     if (!user) return;
-    
+
     try {
       const newProject = await createProject({
         userId: user.id,
@@ -60,7 +87,7 @@ export default function DashboardPage() {
   return (
     <div className="flex h-screen bg-background">
       <Sidebar projects={projects} onAddProject={handleAddProject} />
-      
+
       <main className="flex-1 overflow-auto p-6">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -78,7 +105,7 @@ export default function DashboardPage() {
               <p className="text-xs text-muted-foreground">+{projects.length} this month</p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Tasks Due Today</CardTitle>
@@ -91,7 +118,7 @@ export default function DashboardPage() {
               </p>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Completed Today</CardTitle>
@@ -116,8 +143,8 @@ export default function DashboardPage() {
             <CardContent>
               <div className="space-y-4">
                 {projects.map((project) => (
-                  <div 
-                    key={project.id} 
+                  <div
+                    key={project.id}
                     className="flex items-center justify-between p-3 border rounded-lg"
                     style={{ borderLeft: `4px solid ${project.color}` }}
                   >
@@ -143,8 +170,8 @@ export default function DashboardPage() {
             <CardContent>
               <div className="space-y-4">
                 {todayTasks.map((taskWithProject) => (
-                  <div 
-                    key={taskWithProject.task.id} 
+                  <div
+                    key={taskWithProject.task.id}
                     className="flex items-center justify-between p-3 border rounded-lg"
                   >
                     <div>

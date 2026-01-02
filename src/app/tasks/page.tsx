@@ -44,7 +44,34 @@ export default function TasksPage() {
       setProjects(userProjects as Project[]);
       
       const userTasks = await getTasksByUser(user.id);
-      setTasks(userTasks as TaskWithProject[]);
+      // Transform the data to match TaskWithProject type
+      const transformedTasks = userTasks.map((item: any) => ({
+        task: {
+          id: item.tasks.id,
+          userId: item.tasks.userId,
+          projectId: item.tasks.projectId,
+          noteId: item.tasks.noteId,
+          title: item.tasks.title,
+          description: item.tasks.description,
+          dueAt: item.tasks.dueAt,
+          reminderOffsetMinutes: item.tasks.reminderOffsetMinutes,
+          isCompleted: item.tasks.isCompleted,
+          isRecurring: item.tasks.isRecurring,
+          recurrenceRule: item.tasks.recurrenceRule,
+          createdAt: item.tasks.createdAt,
+          updatedAt: item.tasks.updatedAt,
+        },
+        project: {
+          id: item.project.id,
+          userId: item.project.userId,
+          name: item.project.name,
+          color: item.project.color,
+          isArchived: item.project.isArchived,
+          createdAt: item.project.createdAt,
+          updatedAt: item.project.updatedAt,
+        }
+      }));
+      setTasks(transformedTasks);
     } catch (error) {
       console.error('Error loading tasks data:', error);
     } finally {

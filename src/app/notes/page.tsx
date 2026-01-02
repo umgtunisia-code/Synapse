@@ -37,7 +37,27 @@ export default function NotesPage() {
       setProjects(userProjects as Project[]);
       
       const userNotes = await getNotesByUser(user.id);
-      setNotes(userNotes as NoteWithProject[]);
+      // Transform the data to match NoteWithProject type
+      const transformedNotes = userNotes.map((item: any) => ({
+        note: {
+          id: item.notes.id,
+          projectId: item.notes.projectId,
+          title: item.notes.title,
+          content: item.notes.content,
+          createdAt: item.notes.createdAt,
+          updatedAt: item.notes.updatedAt,
+        },
+        project: {
+          id: item.project.id,
+          userId: item.project.userId,
+          name: item.project.name,
+          color: item.project.color,
+          isArchived: item.project.isArchived,
+          createdAt: item.project.createdAt,
+          updatedAt: item.project.updatedAt,
+        }
+      }));
+      setNotes(transformedNotes);
     } catch (error) {
       console.error('Error loading notes data:', error);
     } finally {

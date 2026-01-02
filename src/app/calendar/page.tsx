@@ -39,19 +39,19 @@ export default function CalendarPage() {
 
       const userTasks = await getTasksByDateRange(user.id, startOfMonth, endOfMonth);
 
-      // Convert tasks to calendar events
-      const calendarEvents = userTasks.map((taskWithProject: any) => ({
-        id: taskWithProject.tasks.id,
-        title: taskWithProject.tasks.title,
-        start: taskWithProject.tasks.dueAt,
-        end: taskWithProject.tasks.dueAt,
-        projectId: taskWithProject.tasks.projectId,
-        projectName: taskWithProject.project.name,
-        projectColor: taskWithProject.project.color,
-        isCompleted: taskWithProject.tasks.isCompleted,
+      // Transform the data to match CalendarEvent type
+      const transformedEvents = userTasks.map((item: any) => ({
+        id: item.tasks.id,
+        title: item.tasks.title,
+        start: item.tasks.dueAt,
+        end: item.tasks.dueAt,
+        projectId: item.tasks.projectId,
+        projectName: item.project.name,
+        projectColor: item.project.color,
+        isCompleted: item.tasks.isCompleted,
       }));
 
-      setEvents(calendarEvents);
+      setEvents(transformedEvents);
     } catch (error) {
       console.error('Error loading calendar data:', error);
       toast.error('Failed to load calendar data');
@@ -177,6 +177,3 @@ export default function CalendarPage() {
     </div>
   );
 }
-
-// We need to import createProject here
-// Import createProject at the top with other imports

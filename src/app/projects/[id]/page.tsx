@@ -43,10 +43,57 @@ export default function ProjectDetailPage() {
       
       // Load notes and tasks for this project
       const projectNotes = await getNotesByProject(projectId, user.id);
-      setNotes(projectNotes as NoteWithProject[]);
-      
+      // Transform the data to match NoteWithProject type
+      const transformedNotes = projectNotes.map((item: any) => ({
+        note: {
+          id: item.notes.id,
+          projectId: item.notes.projectId,
+          title: item.notes.title,
+          content: item.notes.content,
+          createdAt: item.notes.createdAt,
+          updatedAt: item.notes.updatedAt,
+        },
+        project: {
+          id: item.project.id,
+          userId: item.project.userId,
+          name: item.project.name,
+          color: item.project.color,
+          isArchived: item.project.isArchived,
+          createdAt: item.project.createdAt,
+          updatedAt: item.project.updatedAt,
+        }
+      }));
+      setNotes(transformedNotes);
+
       const projectTasks = await getTasksByProject(projectId, user.id);
-      setTasks(projectTasks as TaskWithProject[]);
+      // Transform the data to match TaskWithProject type
+      const transformedTasks = projectTasks.map((item: any) => ({
+        task: {
+          id: item.tasks.id,
+          userId: item.tasks.userId,
+          projectId: item.tasks.projectId,
+          noteId: item.tasks.noteId,
+          title: item.tasks.title,
+          description: item.tasks.description,
+          dueAt: item.tasks.dueAt,
+          reminderOffsetMinutes: item.tasks.reminderOffsetMinutes,
+          isCompleted: item.tasks.isCompleted,
+          isRecurring: item.tasks.isRecurring,
+          recurrenceRule: item.tasks.recurrenceRule,
+          createdAt: item.tasks.createdAt,
+          updatedAt: item.tasks.updatedAt,
+        },
+        project: {
+          id: item.project.id,
+          userId: item.project.userId,
+          name: item.project.name,
+          color: item.project.color,
+          isArchived: item.project.isArchived,
+          createdAt: item.project.createdAt,
+          updatedAt: item.project.updatedAt,
+        }
+      }));
+      setTasks(transformedTasks);
     } catch (error) {
       console.error('Error loading project data:', error);
     } finally {
