@@ -114,7 +114,7 @@ export default function DashboardPage() {
             <CardContent>
               <div className="text-2xl font-bold">{todayTasks.length}</div>
               <p className="text-xs text-muted-foreground">
-                {todayTasks.filter(t => !t.task.isCompleted).length} pending
+                {todayTasks.filter(t => !(t.task.isCompleted ?? false)).length} pending
               </p>
             </CardContent>
           </Card>
@@ -126,10 +126,10 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {todayTasks.filter(t => t.task.isCompleted).length}
+                {todayTasks.filter(t => t.task.isCompleted ?? false).length}
               </div>
               <p className="text-xs text-muted-foreground">
-                {Math.round((todayTasks.filter(t => t.task.isCompleted).length / todayTasks.length) * 100) || 0}% completion
+                {Math.round((todayTasks.filter(t => t.task.isCompleted ?? false).length / todayTasks.length) * 100) || 0}% completion
               </p>
             </CardContent>
           </Card>
@@ -180,7 +180,7 @@ export default function DashboardPage() {
                         {taskWithProject.project.name} • {new Date(taskWithProject.task.dueAt).toLocaleTimeString()}
                       </p>
                     </div>
-                    <div className={`h-3 w-3 rounded-full ${taskWithProject.task.isCompleted ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+                    <div className={`h-3 w-3 rounded-full ${taskWithProject.task.isCompleted ?? false ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
                   </div>
                 ))}
                 {todayTasks.length === 0 && (

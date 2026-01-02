@@ -160,7 +160,7 @@ export default function ProjectDetailPage() {
                     <Card key={taskWithProject.task.id} className="p-4">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h3 className={`font-medium ${taskWithProject.task.isCompleted ? 'line-through text-muted-foreground' : ''}`}>
+                          <h3 className={`font-medium ${taskWithProject.task.isCompleted ?? false ? 'line-through text-muted-foreground' : ''}`}>
                             {taskWithProject.task.title}
                           </h3>
                           <p className="text-sm text-muted-foreground">

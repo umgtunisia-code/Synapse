@@ -87,9 +87,10 @@ export default function TaskDetailPage() {
 
   const handleToggleCompletion = async () => {
     if (!user || !task) return;
-    
+
     try {
-      const updatedTask = await toggleTaskCompletion(task.id, user.id, !task.isCompleted);
+      const currentStatus = task.isCompleted ?? false;
+      const updatedTask = await toggleTaskCompletion(task.id, user.id, !currentStatus);
       if (updatedTask && updatedTask.length > 0) {
         setTask(updatedTask[0] as Task);
         setTaskData({ ...taskData, isCompleted: !(taskData.isCompleted ?? false) });
@@ -156,7 +157,7 @@ export default function TaskDetailPage() {
               <CardHeader>
                 <div className="flex items-start space-x-3">
                   <Checkbox
-                    checked={taskData.isCompleted}
+                    checked={taskData.isCompleted ?? false}
                     onCheckedChange={handleToggleCompletion}
                     className="mt-1"
                   />
@@ -167,7 +168,7 @@ export default function TaskDetailPage() {
                       className="text-2xl font-bold border-none focus-visible:ring-0"
                     />
                   ) : (
-                    <h2 className={`text-2xl font-bold ${taskData.isCompleted ? 'line-through text-muted-foreground' : ''}`}>
+                    <h2 className={`text-2xl font-bold ${taskData.isCompleted ?? false ? 'line-through text-muted-foreground' : ''}`}>
                       {taskData.title}
                     </h2>
                   )}
@@ -245,8 +246,8 @@ export default function TaskDetailPage() {
                   <div>
                     <h3 className="text-sm font-medium mb-1">Status</h3>
                     <div className="flex items-center">
-                      <div className={`h-3 w-3 rounded-full mr-2 ${taskData.isCompleted ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
-                      <span>{taskData.isCompleted ? 'Completed' : 'Pending'}</span>
+                      <div className={`h-3 w-3 rounded-full mr-2 ${taskData.isCompleted ?? false ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+                      <span>{taskData.isCompleted ?? false ? 'Completed' : 'Pending'}</span>
                     </div>
                   </div>
                   

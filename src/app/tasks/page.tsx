@@ -235,8 +235,8 @@ export default function TasksPage() {
                 <Card key={taskWithProject.task.id}>
                   <CardContent className="p-4 flex items-start space-x-4">
                     <Checkbox
-                      checked={taskWithProject.task.isCompleted}
-                      onCheckedChange={() => handleToggleTask(taskWithProject.task.id, taskWithProject.task.isCompleted)}
+                      checked={taskWithProject.task.isCompleted ?? false}
+                      onCheckedChange={() => handleToggleTask(taskWithProject.task.id, taskWithProject.task.isCompleted ?? false)}
                       className="mt-1"
                     />
                     

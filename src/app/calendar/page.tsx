@@ -152,8 +152,8 @@ export default function CalendarPage() {
                   title: event.title,
                   start: event.start,
                   end: event.end,
-                  backgroundColor: event.isCompleted ? '#9ca3af' : event.projectColor, // Gray if completed
-                  borderColor: event.isCompleted ? '#9ca3af' : event.projectColor,
+                  backgroundColor: event.isCompleted ?? false ? '#9ca3af' : event.projectColor, // Gray if completed
+                  borderColor: event.isCompleted ?? false ? '#9ca3af' : event.projectColor,
                   textColor: '#ffffff',
                   extendedProps: {
                     isCompleted: event.isCompleted,
