@@ -48,7 +48,7 @@ export default function CalendarPage() {
         projectId: item.tasks.projectId,
         projectName: item.project.name,
         projectColor: item.project.color,
-        isCompleted: item.tasks.isCompleted,
+        isCompleted: item.tasks.isCompleted || false,
       }));
 
       setEvents(transformedEvents);

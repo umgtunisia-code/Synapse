@@ -21,14 +21,14 @@ export interface Task {
   id: string;
   userId: string;
   projectId: string;
-  noteId?: string;
+  noteId?: string | null;
   title: string;
-  description?: string;
+  description?: string | null;
   dueAt: Date;
-  reminderOffsetMinutes?: number;
-  isCompleted: boolean;
-  isRecurring: boolean;
-  recurrenceRule?: string;
+  reminderOffsetMinutes?: number | null;
+  isCompleted: boolean | null;
+  isRecurring: boolean | null;
+  recurrenceRule?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

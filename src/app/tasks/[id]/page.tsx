@@ -55,7 +55,7 @@ export default function TaskDetailPage() {
           description: fullTask.description || '',
           dueAt: new Date(fullTask.dueAt).toISOString().split('T')[0],
           projectId: fullTask.projectId,
-          isCompleted: fullTask.isCompleted
+          isCompleted: fullTask.isCompleted ?? false
         });
       }
     } catch (error) {
@@ -71,12 +71,13 @@ export default function TaskDetailPage() {
     try {
       const updatedTask = await updateTask(task.id, user.id, {
         title: taskData.title,
-        description: taskData.description,
+        description: taskData.description || null,
         dueAt: new Date(taskData.dueAt),
         projectId: taskData.projectId,
+        isCompleted: taskData.isCompleted,
         updatedAt: new Date(),
       });
-      
+
       setTask(updatedTask[0] as Task);
       setIsEditing(false);
     } catch (error) {
@@ -91,7 +92,7 @@ export default function TaskDetailPage() {
       const updatedTask = await toggleTaskCompletion(task.id, user.id, !task.isCompleted);
       if (updatedTask && updatedTask.length > 0) {
         setTask(updatedTask[0] as Task);
-        setTaskData({ ...taskData, isCompleted: !taskData.isCompleted });
+        setTaskData({ ...taskData, isCompleted: !(taskData.isCompleted ?? false) });
       }
     } catch (error) {
       console.error('Error updating task completion:', error);
